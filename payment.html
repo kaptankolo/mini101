@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ödeme</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f8f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .form {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      width: 300px;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #0078d4;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #005fa3;
+    }
+  </style>
+</head>
+<body>
+  <div class="form">
+    <h2>Ödeme Yap</h2>
+    <input type="text" id="name" placeholder="Ad Soyad" required />
+    <input type="text" id="card" placeholder="Kart Numarası" required />
+    <input type="text" id="address" placeholder="Adres" required />
+    <button onclick="submitPayment()">Öde</button>
+  </div>
+
+  <script>
+    function submitPayment() {
+      const name = document.getElementById('name').value;
+      const card = document.getElementById('card').value;
+      const address = document.getElementById('address').value;
+
+      if (!name || !card || !address) {
+        alert('Lütfen tüm alanları doldurun.');
+        return;
+      }
+
+      const items = JSON.parse(localStorage.getItem('cart')) || [];
+      const total = items.reduce((sum, item) => sum + item.price, 0);
+
+      const orders = JSON.parse(localStorage.getItem('orders')) || [];
+      orders.push({ name, card, address, items, total });
+      localStorage.setItem('orders', JSON.stringify(orders));
+
+      localStorage.removeItem('cart');
+      alert('Ödeme başarılı!');
+      window.location.href = 'success.html';
+    }
+  </script>
+</body>
+</html>
